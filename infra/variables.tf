@@ -1,4 +1,22 @@
-variable "aws_region" {
+variable "name_prefix" {
   type    = string
-  default = "us-east-1"
+  default = "2tier"
+}
+
+variable "vpc_cidr" {
+  type    = string
+  default = "10.0.0.0/16"
+}
+
+variable "db_name" {
+  type = string
+}
+
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type      = string
+  sensitive = true
 }
