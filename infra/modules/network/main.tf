@@ -24,12 +24,12 @@ resource "aws_internet_gateway" "this" {
   }
 }
 
-# Public subnets (2)
+# Public subnets (2 AZs)
 resource "aws_subnet" "public" {
   count                   = var.az_count
   vpc_id                  = aws_vpc.this.id
   availability_zone       = local.azs[count.index]
-  cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index) # 10.0.X.0/24
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index) # /24s
   map_public_ip_on_launch = true
 
   tags = {
@@ -38,12 +38,12 @@ resource "aws_subnet" "public" {
   }
 }
 
-# Private subnets (2)
+# Private subnets (2 AZs)
 resource "aws_subnet" "private" {
   count             = var.az_count
   vpc_id            = aws_vpc.this.id
   availability_zone = local.azs[count.index]
-  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10) # 10.0.(10+X).0/24
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10) # /24s
 
   tags = {
     Name = "${var.name_prefix}-private-${count.index + 1}"
@@ -51,7 +51,7 @@ resource "aws_subnet" "private" {
   }
 }
 
-# Public route table
+# Public route table -> IGW
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
@@ -72,7 +72,7 @@ resource "aws_route_table_association" "public_assoc" {
   route_table_id = aws_route_table.public.id
 }
 
-# NAT (recommended for private outbound)
+# NAT gateway (recommended) for private outbound access
 resource "aws_eip" "nat" {
   domain = "vpc"
 
@@ -92,7 +92,7 @@ resource "aws_nat_gateway" "this" {
   depends_on = [aws_internet_gateway.this]
 }
 
-# Private route table
+# Private route table -> NAT
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
