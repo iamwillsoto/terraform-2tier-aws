@@ -2,10 +2,14 @@ output "vpc_id" {
   value = module.network.vpc_id
 }
 
-output "public_subnet_ids" {
-  value = module.network.public_subnet_ids
+output "alb_sg_id" {
+  value = module.security.alb_sg_id
 }
 
-output "private_subnet_ids" {
-  value = module.network.private_subnet_ids
+output "web_sg_id" {
+  value = module.security.web_sg_id
+}
+
+output "rds_sg_id" {
+  value = module.security.rds_sg_id
 }
