@@ -24,3 +24,16 @@ module "rds" {
   db_username = var.db_username
   db_password = var.db_password
 }
+
+module "compute" {
+  source = "./modules/compute"
+
+  name_prefix       = var.name_prefix
+  public_subnet_ids = module.network.public_subnet_ids
+  web_sg_id         = module.security.web_sg_id
+
+  db_endpoint = module.rds.db_endpoint
+  db_name     = var.db_name
+  db_username = var.db_username
+  db_password = var.db_password
+}
