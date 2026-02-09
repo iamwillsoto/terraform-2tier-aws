@@ -1,7 +1,7 @@
-output "rds_endpoint" {
-  value = module.rds.db_endpoint
+output "alb_dns_name" {
+  value = module.alb.alb_dns_name
 }
 
-output "instance_ids" {
-  value = module.compute.instance_ids
+output "rds_endpoint" {
+  value = module.rds.db_endpoint
 }

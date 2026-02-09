@@ -37,3 +37,13 @@ module "compute" {
   db_username = var.db_username
   db_password = var.db_password
 }
+
+module "alb" {
+  source = "./modules/alb"
+
+  name_prefix         = var.name_prefix
+  vpc_id              = module.network.vpc_id
+  public_subnet_ids   = module.network.public_subnet_ids
+  alb_sg_id           = module.security.alb_sg_id
+  target_instance_ids = module.compute.instance_ids
+}
