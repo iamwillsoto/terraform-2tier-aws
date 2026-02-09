@@ -33,10 +33,10 @@ chmod -R 755 /var/www/html
 cd /var/www/html
 cp wp-config-sample.php wp-config.php
 
-sed -i "s/database_name_here/${DB_NAME}/" wp-config.php
-sed -i "s/username_here/${DB_USER}/" wp-config.php
-sed -i "s/password_here/${DB_PASS}/" wp-config.php
-sed -i "s/localhost/${DB_HOST}/" wp-config.php
+sed -i "s/database_name_here/${db_name}/" wp-config.php
+sed -i "s/username_here/${db_username}/" wp-config.php
+sed -i "s/password_here/${db_password}/" wp-config.php
+sed -i "s/localhost/${db_endpoint}/" wp-config.php
 
 # Restart Apache
 systemctl restart httpd
